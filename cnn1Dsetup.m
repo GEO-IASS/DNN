@@ -40,9 +40,21 @@ function net = cnn1Dsetup(net, x, y)
     % 'ffW' is the weights between the last layer and the output neurons. Note that the last layer is fully connected to the output layer, that's why the size of the weights is (onum * fvnum)
     fvnum = mapsize * inputmaps;
     
-    disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
     onum = size(y, 1);
+%     add a hidden layer at last, instead of original perceptron.
+    hvnum = fvnum;
+    net.hfb = zeros(hvnum, 1);
+    net.hfW = (rand(hvnum, fvnum) - 0.5) * 2 * sqrt(6 / (hvnum + fvnum));
+    
+    disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
 
     net.ffb = zeros(onum, 1);
-    net.ffW = (rand(onum, fvnum) - 0.5) * 2 * sqrt(6 / (onum + fvnum));
+    net.ffW = (rand(onum, hvnum) - 0.5) * 2 * sqrt(6 / (onum + hvnum));
+
+%   original perceptron.
+%     disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
+% 
+%     net.ffb = zeros(onum, 1);
+%     net.ffW = (rand(onum, fvnum) - 0.5) * 2 * sqrt(6 / (onum + fvnum));
+    
 end

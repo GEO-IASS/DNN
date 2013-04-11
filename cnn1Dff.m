@@ -55,6 +55,12 @@ function net = cnn1Dff(net, x)
     end
     %disp(['net.fv size=' num2str(size(net.fv))])
     %  feedforward into output perceptrons
-    net.o = sigm(net.ffW * net.fv + repmat(net.ffb, 1, size(net.fv, 2)));
+    
+    % add a hidden layer at last, instead of original perceptron.
+     net.ho = sigm(net.hfW * net.fv + repmat(net.hfb, 1, size(net.fv, 2)));
+     net.o = sigm(net.ffW * net.ho + repmat(net.ffb, 1, size(net.ho, 2)));
+
+%   original perceptron. 
+%    net.o = sigm(net.ffW * net.fv + repmat(net.ffb, 1, size(net.fv, 2)));
 
 end

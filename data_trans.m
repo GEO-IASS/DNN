@@ -1,6 +1,20 @@
 function [dx, dy, dp] = data_trans(data)
 
+% Interpolate to remove NaN.
+data(:, 3) = inpaint_nans(data(:, 3));
+
 labels = unique(data(:, 2));
+% % normalize
+% for i = 1 : size(labels, 1)
+%     
+%     tmp = data(data(:, 2) == labels(i), 3);
+%     %disp(mean(tmp));
+%     tmp = tmp - mean(tmp);
+%     tmp = tmp / std(tmp);
+%     
+%     data(data(:, 2) == labels(i), 3) = tmp;
+% end
+
 
 frame = 256;
 col = size(data, 1) - frame + 1;

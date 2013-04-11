@@ -20,7 +20,10 @@ function test_example_CNN1D(gen_x, gen_y, test_x, test_y)
 % end
 % 
 % gen_y = [tri_y, sin_y];
-% 256 -> 
+% rnum = size(gen_x, 2);
+% pos = randperm(rnum);
+% gen_x = gen_x(:, pos);
+% gen_y = gen_y(:, pos);
 
 
 %% ex1 Train a 6c-2s-12c-2s Convolutional neural network 
@@ -29,9 +32,9 @@ function test_example_CNN1D(gen_x, gen_y, test_x, test_y)
 rng(0)
 cnn.layers = {
     struct('type', 'i') %input layer
-    struct('type', 'c', 'outputmaps', 12, 'kernelsize', 5) %convolution layer
+    struct('type', 'c', 'outputmaps', 3, 'kernelsize', 5) %convolution layer
     struct('type', 's', 'scale', 2) %sub sampling layer
-    struct('type', 'c', 'outputmaps', 16, 'kernelsize', 5) %convolution layer
+    struct('type', 'c', 'outputmaps', 6, 'kernelsize', 5) %convolution layer
     struct('type', 's', 'scale', 2) %subsampling layer
     
     %% more layers.
@@ -44,7 +47,7 @@ cnn = cnn1Dsetup(cnn, gen_x, gen_y);
 
 opts.alpha = 1;
 opts.batchsize = 50;
-opts.numepochs = 1;
+opts.numepochs = 100;
 
 cnn = cnn1Dtrain(cnn, gen_x, gen_y, opts);
 

@@ -14,4 +14,8 @@ function net = cnn1Dapplygrads(net, opts)
 
     net.ffW = net.ffW - opts.alpha * net.dffW;
     net.ffb = net.ffb - opts.alpha * net.dffb;
+    
+    % for hidden layer.
+    net.hfW = net.hfW - opts.alpha * net.dhfW;
+    net.hfb = net.hfb - opts.alpha * net.dhfb;
 end
