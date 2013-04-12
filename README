@@ -1,0 +1,4 @@
+
+cnn1D/, 1-D time series codes.
+cnnKD/, K-D time series convolute independently and connect at final MLP layers.
+cnnKD2/, K-D time series convolute together, just like an image.
