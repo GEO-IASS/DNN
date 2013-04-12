@@ -8,8 +8,12 @@ function net = cnn1Dbp(net, y)
     %  loss function: 
     net.L = 1/2* sum(net.e(:) .^ 2) / size(net.e, 2);
 
-    %%  backprop deltas
-    net.od = net.e .* (net.o .* (1 - net.o));   %  output delta, y^ 's delta.
+    % softmax derivative.
+    for i = 1 : size(y, 2)
+        net.od(:, i) = (eye(size(y, 1)) - repmat(y(:, i), 1, size(y, 1))) * net.o(:, i);
+    end
+    %% backprop deltas
+    % net.od = net.e .* (net.o .* (1 - net.o));   %  output delta, y^ 's delta.
     
     %% backprop for hidden layer.
     net.hod = (net.ffW' * net.od ) .* (net.ho .* (1 - net.ho));

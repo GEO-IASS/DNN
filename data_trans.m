@@ -41,8 +41,8 @@ for i = 1 : step : col
     
 end
 
-dx = [dx(:, (dy(2, :) == 1)), dx(:, (dy(3, :) == 1))];
-dy = [dy(:, (dy(2, :) == 1)), dy(:, (dy(3, :) == 1))];
+%dx = [dx(:, (dy(2, :) == 1)), dx(:, (dy(3, :) == 1))];
+%dy = [dy(:, (dy(2, :) == 1)), dy(:, (dy(3, :) == 1))];
 
 rnum = size(dx, 2);
 pos = randperm(rnum);

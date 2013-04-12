@@ -47,7 +47,7 @@ cnn = cnn1Dsetup(cnn, gen_x, gen_y);
 
 opts.alpha = 1;
 opts.batchsize = 50;
-opts.numepochs = 100;
+opts.numepochs = 300;
 
 cnn = cnn1Dtrain(cnn, gen_x, gen_y, opts);
 

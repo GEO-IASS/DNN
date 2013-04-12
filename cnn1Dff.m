@@ -58,8 +58,17 @@ function net = cnn1Dff(net, x)
     
     % add a hidden layer at last, instead of original perceptron.
      net.ho = sigm(net.hfW * net.fv + repmat(net.hfb, 1, size(net.fv, 2)));
-     net.o = sigm(net.ffW * net.ho + repmat(net.ffb, 1, size(net.ho, 2)));
-
+     
+     % softmax calculation.
+     tmpsv = exp(net.ffW * net.ho + repmat(net.ffb, 1, size(net.ho, 2)));
+    % disp(size(net.ffW * net.ho + repmat(net.ffb, 1, size(net.ho, 2))));
+    %disp(tmpsv);
+    % sum by col, yes, 1 means sum by col. 
+   % bsxfun(@rdivide, a, b)
+    net.o = bsxfun(@rdivide, tmpsv, sum(tmpsv, 1));
+    %disp(size(net.o));
+   % disp(size(net.o));
+    % disp(['sum of softmax' num2str(sum(tmpsv, 2))]);
 %   original perceptron. 
 %    net.o = sigm(net.ffW * net.fv + repmat(net.ffb, 1, size(net.fv, 2)));
 
