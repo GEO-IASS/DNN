@@ -1,7 +1,7 @@
-function [dx, dy, dp] = data_trans(data)
+function [dx, dy] = data_trans(data)
 
 % Interpolate to remove NaN.
-data(:, 3) = inpaint_nans(data(:, 3));
+data(:, 3:end) = inpaint_nans(data(:, 3:end));
 
 labels = unique(data(:, 2));
 % % normalize
@@ -18,7 +18,7 @@ labels = unique(data(:, 2));
 
 frame = 256;
 col = size(data, 1) - frame + 1;
-step = 2;
+step = 4;
 
 dx = [];
 dy = [];
@@ -27,18 +27,18 @@ numa = 0;
 numb = 0;
 
 for i = 1 : step : col
+    % Remove all intersect segments.
+    if frame ~= sum(data(i : (i + frame - 1), 2) == data(i, 2))    
+    %    dy = [dy, labels == 0];
+    %    dx = [dx, reshape(data(i : (i + frame - 1), 3 : end), frame * (size(data, 2) - 3 + 1), 1)];
     
-    if(~isnan(data(i : (i + frame - 1), 2:3)))
-        dx = [dx, data(i : (i + frame - 1), 3)];
-        if frame ~= sum(data(i : (i + frame - 1), 2) == data(i, 2))    
-            dy = [dy, labels == 0];
-            numa = numa + 1;
-        else
-            dy = [dy, labels == data(i, 2)];
-            numb = numb + 1;
-        end
+        numa = numa + 1;
+    else
+        dy = [dy, labels == data(i, 2)];
+        dx = [dx, reshape(data(i : (i + frame - 1), 3 : end), frame * (size(data, 2) - 3 + 1), 1)];
+    
+        numb = numb + 1;
     end
-    
 end
 
 %dx = [dx(:, (dy(2, :) == 1)), dx(:, (dy(3, :) == 1))];

@@ -1,39 +1,55 @@
-function [dx, dy, dp] = data_trans(data)
+function [dx, dy] = data_trans(data)
+
+% Interpolate to remove NaN.
+data(:, 3:end) = inpaint_nans(data(:, 3:end));
 
 labels = unique(data(:, 2));
+% % normalize
+% for i = 1 : size(labels, 1)
+%     
+%     tmp = data(data(:, 2) == labels(i), 3);
+%     %disp(mean(tmp));
+%     tmp = tmp - mean(tmp);
+%     tmp = tmp / std(tmp);
+%     
+%     data(data(:, 2) == labels(i), 3) = tmp;
+% end
+
 
 frame = 256;
 col = size(data, 1) - frame + 1;
 step = 4;
 
-dx = [];
-dy = [];
+dx = {};
+dy = {};
 
 numa = 0;
 numb = 0;
 
-for i = 1 : step : col
-    
-    if(~isnan(data(i : (i + frame - 1), 2:3)))
-        dx = [dx, data(i : (i + frame - 1), 3)];
-        if frame ~= sum(data(i : (i + frame - 1), 2) == data(i, 2))    
-            dy = [dy, labels == 0];
-            numa = numa + 1;
-        else
-            dy = [dy, labels == data(i, 2)];
-            numb = numb + 1;
-        end
-    end
-    
+for i = 3 : size(data, 2)
 end
 
-dx = dx(:, (dy(2, :) == 2));
-dy = dy(:, (dy(2, :) == 2));
+for i = 1 : step : col
+    for ci = 3 : size(data, 2)
+        dx{ci - 2} = [dx{ci - 2}, data(i : (i + frame - 1), ci)];
+    end
+    %dx = [dx, reshape(data(i : (i + frame - 1), 3 : end), frame * (size(data, 2) - 3 + 1), 1)];
+    if frame ~= sum(data(i : (i + frame - 1), 2) == data(i, 2))    
+        dy = [dy, labels == 0];
+        numa = numa + 1;
+    else
+        dy = [dy, labels == data(i, 2)];
+        numb = numb + 1;
+    end
+end
 
-rnum = size(dx, 2);
+%dx = [dx(:, (dy(2, :) == 1)), dx(:, (dy(3, :) == 1))];
+%dy = [dy(:, (dy(2, :) == 1)), dy(:, (dy(3, :) == 1))];
+
+rnum = size(dy, 2);
 pos = randperm(rnum);
 
-dx = dx(:, pos);
+dx = dx{:}(:, pos);
 dy = dy(:, pos);
 
 % check statistics for each class.

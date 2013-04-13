@@ -1,4 +1,4 @@
-function test_example_CNN1D(gen_x, gen_y, test_x, test_y)
+function cnn = test_example_CNNKD(gen_x, gen_y, test_x, test_y)
 
 % gen_x = repmat(sin(0.1:0.1:25.6), 10000, 1)';
 % gen_y = repmat([0 1]', 1, 10000);
@@ -30,7 +30,8 @@ function test_example_CNN1D(gen_x, gen_y, test_x, test_y)
 %will run 1 epoch in about 200 second and get around 11% error. 
 %With 100 epochs you'll get around 1.2% error
 rng(0)
-cnn.layers = {
+
+comp.layers = {
     struct('type', 'i') %input layer
     struct('type', 'c', 'outputmaps', 3, 'kernelsize', 5) %convolution layer
     struct('type', 's', 'scale', 2) %sub sampling layer
@@ -43,33 +44,45 @@ cnn.layers = {
    % struct('type', 'c', 'outputmaps', 64, 'kernelsize', 4) %convolution layer
    % struct('type', 's', 'scale', 2) %subsampling layer
 };
-cnn = cnn1Dsetup(cnn, gen_x, gen_y);
+
+frame = 256;
+comps = [];
+
+for i = 1 : (size(gen_x, 1) / frame)
+    comps = [comps, cnnKDsetup1D(comp, gen_x( ((i-1)*frame + 1) : i*frame, :))];
+end
+
+cnn = cnnKDsetupKD(comps, gen_y);
 
 opts.alpha = 1;
 opts.batchsize = 50;
-opts.numepochs = 300;
+opts.numepochs = 100;
 
-cnn = cnn1Dtrain(cnn, gen_x, gen_y, opts);
+cnn = cnnKDtrain(cnn, gen_x, gen_y, opts);
 
-[er, bad] = cnn1Dtest(cnn, test_x, test_y);
+
+[er, bad] = cnnKDtest(cnn, test_x, test_y);
+
 disp(['test error=' num2str(er)]);
 
 %plot mean squared error
-figure; 
+%figure; 
 %plot(cnn.rL);
-hold on;
-for i = 1 : numel(cnn.layers{2}.a)
-    plot(cnn.layers{2}.a{i}(:,1)); 
-end
-hold off;
-figure;
-hold on;
-for i = 1 : numel(cnn.layers{4}.a)
-    plot(cnn.layers{4}.a{i}(:,1)); 
-end
-hold off;
+% hold on;
+% for i = 1 : numel(cnn.layers{2}.a)
+%     plot(cnn.layers{2}.a{i}(:,1)); 
+% end
+% hold off;
+% figure;
+% hold on;
+% for i = 1 : numel(cnn.layers{4}.a)
+%     plot(cnn.layers{4}.a{i}(:,1)); 
+% end
+% hold off;
 
 % 6 x 2 x 13 x 2, epoch=1, error = 0.0116
 % 
 
-assert(er<0.12, 'Too big error');
+%assert(er<0.12, 'Too big error');
+
+

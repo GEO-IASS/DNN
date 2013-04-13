@@ -2,7 +2,7 @@ function [] = frame_plot_by_class(dx, dy, num)
 
 [row, col] = size(dx);
 
-rng(1574);
+rng(15742);
 
 platte = rand(3, size(dy, 1));
 label = [];
@@ -14,5 +14,3 @@ for i = 1 : num
    
    hold on;
 end
-
-legend(unique(label));

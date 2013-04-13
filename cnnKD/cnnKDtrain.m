@@ -1,4 +1,4 @@
-function net = cnn1Dtrain(net, x, y, opts)
+function net = cnnKDtrain(net, x, y, opts)
 
     % m is nrow of train_x.
     m = size(x, 2);
@@ -27,11 +27,11 @@ function net = cnn1Dtrain(net, x, y, opts)
             batch_y = y(:, kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
 
             % feed-forward phase.
-            net = cnn1Dff(net, batch_x);
+            net = cnnKDff(net, batch_x);
             % back-propogation phase.
-            net = cnn1Dbp(net, batch_y);
+            net = cnnKDbp(net, batch_y);
             % update parameters.
-            net = cnn1Dapplygrads(net, opts);
+            net = cnnKDapplygrads(net, opts);
             % update mse.
             if isempty(net.rL)
                 net.rL(1) = net.L;

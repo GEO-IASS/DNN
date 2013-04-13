@@ -1,9 +1,12 @@
 
-function net = cnn1Dsetup(net, x, y)
+function net = cnnKDsetup1D(net, x)
+%%  setup 1D time series.
+
     inputmaps = 1;
     % mapsize is 28 x 28 when input is 2D-image, time frame (100) when input
     % is 1D-time series. row -> frame length, col -> # of records. 
     mapsize = size(x, 1);
+    net.frame = mapsize;
     % 
     
     for l = 1 : numel(net.layers)   %  layer
@@ -38,18 +41,19 @@ function net = cnn1Dsetup(net, x, y)
     % 'fvnum' is the number of output neurons at the last layer, the layer just before the output layer.
     % 'ffb' is the biases of the output neurons.
     % 'ffW' is the weights between the last layer and the output neurons. Note that the last layer is fully connected to the output layer, that's why the size of the weights is (onum * fvnum)
-    fvnum = mapsize * inputmaps;
-    
-    onum = size(y, 1);
-%     add a hidden layer at last, instead of original perceptron.
-    hvnum = fvnum;
-    net.hfb = zeros(hvnum, 1);
-    net.hfW = (rand(hvnum, fvnum) - 0.5) * 2 * sqrt(6 / (hvnum + fvnum));
-    
-    disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
-
-    net.ffb = zeros(onum, 1);
-    net.ffW = (rand(onum, hvnum) - 0.5) * 2 * sqrt(6 / (onum + hvnum));
+    net.fvnum = mapsize * inputmaps;
+%     
+%     
+%     onum = size(y, 1);
+% %     add a hidden layer at last, instead of original perceptron.
+%     hvnum = fvnum;
+%     net.hfb = zeros(hvnum, 1);
+%     net.hfW = (rand(hvnum, fvnum) - 0.5) * 2 * sqrt(6 / (hvnum + fvnum));
+%     
+%     disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
+% 
+%     net.ffb = zeros(onum, 1);
+%     net.ffW = (rand(onum, hvnum) - 0.5) * 2 * sqrt(6 / (onum + hvnum));
 
 %   original perceptron.
 %     disp(['fvum=' num2str(fvnum) ',mapsize=' num2str(mapsize) ',inputmaps=' num2str(inputmaps)])
