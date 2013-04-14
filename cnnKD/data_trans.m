@@ -18,7 +18,7 @@ labels = unique(data(:, 2));
 
 frame = 256;
 col = size(data, 1) - frame + 1;
-step = 4;
+step = 16;
 
 dx = [];
 dy = [];
