@@ -1,9 +1,12 @@
-function [dx, dy] = data_trans(data)
+function [dx, dy, dp] = data_trans(data)
 
 % Interpolate to remove NaN.
 data(:, 3:end) = inpaint_nans(data(:, 3:end));
+%1 ? 2 ? 3 ? 4 ? 5 ? 6 ?	7 ?	9 ?	10 ?	11 ?	12 ?	13 ?	16 ? 17 ?	18 ?	19 ?	20 ?	24 ?	0
 
+%labels = [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 24]'; %unique(data(:, 2));
 labels = unique(data(:, 2));
+
 % % normalize
 % for i = 1 : size(labels, 1)
 %     
@@ -15,6 +18,17 @@ labels = unique(data(:, 2));
 %     data(data(:, 2) == labels(i), 3) = tmp;
 % end
 
+tmp = (data(:, 3) - mean(data(:, 3)));
+% subplot(211);
+% plot(tmp);
+
+tmp = tmp / std(tmp);%(tmp - min(tmp)) / (max(tmp) - min(tmp)) ;
+% 
+% subplot(212);
+% plot(tmp);
+data(:, 3) = tmp;
+
+dp = tmp;
 
 frame = 256;
 col = size(data, 1) - frame + 1;

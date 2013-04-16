@@ -31,6 +31,8 @@ function net = cnnKDsetup1D(net, x)
                 for i = 1 : inputmaps  %  input map
                     % make sure it's correct.
                     net.layers{l}.k{i}{j} = (rand(net.layers{l}.kernelsize, 1) - 0.5) * 2 * sqrt(6 / (fan_in + fan_out));
+                    
+                    net.layers{l}.v{i}{j} = zeros(size(net.layers{l}.k{i}{j}));
                 end
                 net.layers{l}.b{j} = 0;
             end

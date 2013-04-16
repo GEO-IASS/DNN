@@ -1,7 +1,9 @@
-function net = cnnKDtrain(net, x, y, opts)
+function net = cnnKDtrain(net, x, y, opts, test_x, test_y)
 
     % m is nrow of train_x.
     m = size(x, 2);
+    disp(m);
+    disp(opts.batchsize);
     % numbaches is # of batch.
     numbatches = m / opts.batchsize;
     
@@ -11,8 +13,10 @@ function net = cnnKDtrain(net, x, y, opts)
     end
     % rL is mse.
     net.rL = [];
+    net.er = [];
     
     % for each epoch, update parameters by gradient ascent.
+    
     for i = 1 : opts.numepochs
         disp(['epoch ' num2str(i) '/' num2str(opts.numepochs)]);
         % disp the start time.
@@ -41,6 +45,11 @@ function net = cnnKDtrain(net, x, y, opts)
         end
         % disp the end time.
         toc;
+        
+        [er, bad] = cnnKDtest(net, test_x, test_y);
+        net.er = [net.er, er];
+        
+        disp(['Test error: ' num2str(er) ',net.rL=' num2str(net.rL(end)) ]);
     end
     
 end

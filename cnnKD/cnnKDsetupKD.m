@@ -19,14 +19,15 @@ end
 
 onum = size(y, 1);
 
-hvnum = fvnum;
+hvnum = fvnum / 2;
 
 net.hfb = zeros(hvnum, 1);
 net.hfW = (rand(hvnum, fvnum) - 0.5) * 2 * sqrt(6 / (hvnum + fvnum));
+net.hfv = zeros(size(net.hfW));
 
 net.ffb = zeros(onum, 1);
 net.ffW = (rand(onum, hvnum) - 0.5) * 2 * sqrt(6 / (onum + hvnum));
-
+net.ffv = zeros(size(net.ffW));
 %
 %     onum = size(y, 1);
 % %     add a hidden layer at last, instead of original perceptron.
