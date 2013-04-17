@@ -16,7 +16,7 @@ for i = 1 : size(labels, 1)
     figure(round(i / page + 1));
     subplot(page, 1, mod(i, page) + 1);
     
-    plot(data(indx(3000:5000), 3));
+    plot(data(indx(6000:8000), 6));
     title(['label=' num2str(labels(i))]);
     % end
 end

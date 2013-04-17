@@ -16,12 +16,12 @@ function [er, bad] = cnnKDtest(net, x, y)
         
         net = cnnKDff(net, tmp_x);
         
-       % disp(net.o);
+        %disp(net.o);
         [~, h] = max(net.o);
 
-      %  disp(h);
+        %disp(h);
         [~, a] = max(tmp_y);
-      %  disp(a);
+        %disp(a);
         bad = [bad, find(h ~= a) + i - 1];        
        % er = numel(bad) / size(y, 2);   
     end

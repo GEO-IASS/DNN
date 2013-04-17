@@ -36,7 +36,7 @@ opts.decay = 0.0005;
 opts.momentum = 0.9;
 
 opts.batchsize = 50;
-opts.numepochs = 400;
+opts.numepochs = 100;
 
 cnn = cnnKDtrain(cnn, gen_x, gen_y, opts, test_x, test_y);
 
